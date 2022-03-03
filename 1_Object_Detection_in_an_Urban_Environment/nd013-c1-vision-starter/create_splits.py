@@ -28,6 +28,7 @@ def split(source, destination):
     split_idx = int(0.8 * len(tfrecord_paths))
     TRAIN_PATHs = tfrecord_paths[:split_idx]
     VAL_PATHs = tfrecord_paths[split_idx:]
+
     TRAIN_PATHs = [path.rename(str(train_path / path.name)) for path in TRAIN_PATHs]
     VAL_PATHs = [path.rename(str(val_path / path.name)) for path in VAL_PATHs]
 
