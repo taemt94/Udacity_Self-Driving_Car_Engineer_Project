@@ -1,8 +1,9 @@
 import argparse
 import glob
+from importlib.resources import path
 import os
 import random
-
+import pathlib
 import numpy as np
 
 from utils import get_module_logger
@@ -18,6 +19,17 @@ def split(source, destination):
         - destination [str]: destination data directory, contains 3 sub folders: train / val / test
     """
     # TODO: Implement function
+    source = pathlib.Path(source)
+    destination_paths = list(pathlib.Path(destination).glob("*"))
+    train_path = [path for path in destination_paths if "train" in str(path) and 'val' not in str(path)][0]
+    val_path = [path for path in destination_paths if "val" in str(path) and 'train' not in str(path)][0]
+    
+    tfrecord_paths = list(source.glob("*"))
+    split_idx = int(0.8 * len(tfrecord_paths))
+    TRAIN_PATHs = tfrecord_paths[:split_idx]
+    VAL_PATHs = tfrecord_paths[split_idx:]
+    TRAIN_PATHs = [path.rename(str(train_path / path.name)) for path in TRAIN_PATHs]
+    VAL_PATHs = [path.rename(str(val_path / path.name)) for path in VAL_PATHs]
 
 
 if __name__ == "__main__":
