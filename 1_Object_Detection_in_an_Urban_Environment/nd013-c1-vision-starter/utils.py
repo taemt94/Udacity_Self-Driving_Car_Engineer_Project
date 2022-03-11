@@ -1,7 +1,6 @@
 import logging
 
 from numpy import isin
-
 import tensorflow.compat.v1 as tf
 from object_detection.inputs import train_input
 from object_detection.protos import input_reader_pb2
