@@ -1,6 +1,6 @@
-1_Object_Detection_in_an_Urban_Environment/nd013-c1-vision-starter/data/*
+data/
 .vscode/
 pretrained_model/
 
-1_Object_Detection_in_an_Urban_Environment/nd013-c1-vision-starter/experiments/reference/*
-!1_Object_Detection_in_an_Urban_Environment/nd013-c1-vision-starter/experiments/reference/pipeline_new.config
+1_Object_Detection_in_an_Urban_Environment/experiments/reference/*
+!1_Object_Detection_in_an_Urban_Environment/experiments/reference/pipeline_new.config
