@@ -1,6 +1,8 @@
 data/
 .vscode/
 pretrained_model/
-
-1_Object_Detection_in_an_Urban_Environment/experiments/reference/*
-!1_Object_Detection_in_an_Urban_Environment/experiments/reference/pipeline_new.config
+*__pycache__
+*.ipynb_checkpoints/
+*.sh
+checkpoint*
+ckpt*
