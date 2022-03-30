@@ -27,7 +27,9 @@ python model_main_tf2.py -- \
   --pipeline_config_path=$PIPELINE_CONFIG_PATH \
   --alsologtostderr
 """
+import pathlib
 from absl import flags
+from cv2 import sort
 import tensorflow.compat.v2 as tf
 from object_detection import model_lib_v2
 
@@ -81,15 +83,26 @@ def main(unused_argv):
   tf.config.set_soft_device_placement(True)
 
   if FLAGS.checkpoint_dir:
-    model_lib_v2.eval_continuously(
-        pipeline_config_path=FLAGS.pipeline_config_path,
-        model_dir=FLAGS.model_dir,
-        train_steps=FLAGS.num_train_steps,
-        sample_1_of_n_eval_examples=FLAGS.sample_1_of_n_eval_examples,
-        sample_1_of_n_eval_on_train_examples=(
-            FLAGS.sample_1_of_n_eval_on_train_examples),
-        checkpoint_dir=FLAGS.checkpoint_dir,
-        wait_interval=300, timeout=FLAGS.eval_timeout)
+    cp_base_dir = pathlib.Path(FLAGS.checkpoint_dir)
+    cp_dir = sorted([(int(path.stem.split('-')[-1]), str(path)) for path in cp_base_dir.glob("*.index")])
+    checkpoint_file_name = cp_base_dir / 'checkpoint'
+    checkpoint_file_name.rename(cp_base_dir / "checkpoint_total")
+    print(checkpoint_file_name)
+    
+    for dir in cp_dir:
+      dir = pathlib.Path(dir[-1])
+      print(f"##### Evaluation on checkpoint {dir.stem} #####")
+      with open(checkpoint_file_name, 'w') as f:
+        f.write(f'model_checkpoint_path: "{dir.stem}"\n')
+      model_lib_v2.eval_continuously(
+          pipeline_config_path=FLAGS.pipeline_config_path,
+          model_dir=FLAGS.model_dir,
+          train_steps=FLAGS.num_train_steps,
+          sample_1_of_n_eval_examples=FLAGS.sample_1_of_n_eval_examples,
+          sample_1_of_n_eval_on_train_examples=(
+              FLAGS.sample_1_of_n_eval_on_train_examples),
+          checkpoint_dir=FLAGS.checkpoint_dir,
+          wait_interval=300, timeout=FLAGS.eval_timeout)
   else:
     if FLAGS.use_tpu:
       # TPU is automatically inferred if tpu_name is None and
