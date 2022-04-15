@@ -25,6 +25,7 @@ def split(source, destination):
     val_path = [path for path in destination_paths if "val" in str(path) and 'train' not in str(path)][0]
     
     tfrecord_paths = list(source.glob("*"))
+    random.shuffle(tfrecord_paths)
     split_idx = int(0.8 * len(tfrecord_paths))
     TRAIN_PATHs = tfrecord_paths[:split_idx]
     VAL_PATHs = tfrecord_paths[split_idx:]
