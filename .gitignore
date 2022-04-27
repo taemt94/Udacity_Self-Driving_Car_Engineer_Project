@@ -6,3 +6,6 @@ pretrained_model/
 *.sh
 checkpoint*
 ckpt*
+dataset/
+results/
+pretrained/
