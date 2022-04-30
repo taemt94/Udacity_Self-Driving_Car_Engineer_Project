@@ -22,9 +22,14 @@ def save_object_to_file(object, file_path, base_filename, object_name, frame_id=
         pickle.dump(object, f)
 
 ## Loads an object from a binary file
-def load_object_from_file(file_path, base_filename, object_name, frame_id=1):
-    object_filename = os.path.join(file_path, os.path.splitext(base_filename)[0]
-                                   + "__frame-" + str(frame_id) + "__" + object_name + ".pkl")
+def load_object_from_file(file_path, base_filename, object_name, frame_id=1, model_name='darknet', sequence_mapper=None):
+    sequence_name = str(sequence_mapper[base_filename] + '_' + model_name)
+    if 'det_performance' in object_name or 'detections' in object_name:
+        object_filename = os.path.join(file_path, model_name, sequence_name,
+                                       os.path.splitext(base_filename)[0]+ "__frame-" + str(frame_id) + "__" + object_name + ".pkl")        
+    else:
+        object_filename = os.path.join(file_path, model_name, sequence_name,
+                                       os.path.splitext(base_filename)[0] + "__frame-" + str(frame_id) + "__" + object_name + ".pkl")
     with open(object_filename, 'rb') as f:
         object = pickle.load(f)
         return object

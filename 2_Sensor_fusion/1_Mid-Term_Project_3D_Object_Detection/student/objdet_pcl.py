@@ -11,9 +11,11 @@
 #
 
 # general package imports
+import zlib
 import cv2
 import numpy as np
 import torch
+import open3d as o3d
 
 # add project directory to python path to enable relative imports
 import os
@@ -31,6 +33,7 @@ import misc.objdet_tools as tools
 
 
 # visualize lidar point-cloud
+first = True
 def show_pcl(pcl):
 
     ####### ID_S1_EX2 START #######     
@@ -38,15 +41,32 @@ def show_pcl(pcl):
     print("student task ID_S1_EX2")
 
     # step 1 : initialize open3d with key callback and create window
+    global first
+    if first:
+        show_pcl.visualizer = o3d.visualization.VisualizerWithKeyCallback()  
+        show_pcl.visualizer.create_window()
     
     # step 2 : create instance of open3d point-cloud class
+    pcd = o3d.geometry.PointCloud()
 
     # step 3 : set points in pcd instance by converting the point-cloud into 3d vectors (using open3d function Vector3dVector)
-
-    # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
+    pcd.points = o3d.utility.Vector3dVector(pcl[:, :3])
     
+    # # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
+    if first:
+        show_pcl.visualizer.add_geometry(pcd)
+    else:
+        # show_pcl.visualizer.add_geometry(pcd)
+        show_pcl.visualizer.update_geometry(pcd)
+        show_pcl.visualizer.update_renderer()
+        show_pcl.visualizer.poll_events()     
+        
     # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
-
+    if first:
+        show_pcl.visualizer.register_key_callback(key=262, callback_func=show_pcl.visualizer.destroy_window)
+        first = False
+    
+    pass
     #######
     ####### ID_S1_EX2 END #######     
        
@@ -59,18 +79,34 @@ def show_range_image(frame, lidar_name):
     print("student task ID_S1_EX1")
 
     # step 1 : extract lidar data and range image for the roof-mounted lidar
+    lidar = [obj for obj in frame.lasers if obj.name == lidar_name][0]
+    if len(lidar.ri_return1.range_image_compressed) > 0:
+        range_image = dataset_pb2.MatrixFloat()
+        range_image.ParseFromString(zlib.decompress(lidar.ri_return1.range_image_compressed))
+        range_image = np.array(range_image.data).reshape(range_image.shape.dims)
     
     # step 2 : extract the range and the intensity channel from the range image
+    range_ch = range_image[:, :, 0]
+    intensity_ch = range_image[:, :, 1]
     
     # step 3 : set values <0 to zero
+    range_ch[range_ch < 0] = 0.0
+    intensity_ch[intensity_ch < 0] = 0.0
     
     # step 4 : map the range channel onto an 8-bit scale and make sure that the full range of values is appropriately considered
+    range_ch = (range_ch - np.min(range_ch)) / (np.max(range_ch) - np.min(range_ch)) * (2 ** 8)
     
     # step 5 : map the intensity channel onto an 8-bit scale and normalize with the difference between the 1- and 99-percentile to mitigate the influence of outliers
+    percentile_99 = np.percentile(intensity_ch, 99)
+    percentile_1 = np.percentile(intensity_ch, 1)
+    intensity_ch[intensity_ch < percentile_1] = percentile_1
+    intensity_ch[intensity_ch > percentile_99] = percentile_99
+    
+    intensity_ch = (intensity_ch - percentile_1) / (percentile_99 - percentile_1) * (2 ** 8)
     
     # step 6 : stack the range and intensity image vertically using np.vstack and convert the result to an unsigned 8-bit integer
+    img_range_intensity = np.vstack([range_ch, intensity_ch]).astype(np.uint8)
     
-    img_range_intensity = [] # remove after implementing all steps
     #######
     ####### ID_S1_EX1 END #######     
     
