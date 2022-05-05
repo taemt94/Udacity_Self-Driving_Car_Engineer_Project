@@ -56,7 +56,7 @@ data_filename = 'training_segment-1005081002024129653_5313_150_5333_150_with_cam
 sequence_mapper = {'training_segment-1005081002024129653_5313_150_5333_150_with_camera_labels.tfrecord': 'results_sequence_1',
                    'training_segment-10072231702153043603_5725_000_5745_000_with_camera_labels.tfrecord': 'results_sequence_2',
                    'training_segment-10963653239323173269_1924_000_1944_000_with_camera_labels.tfrecord': 'results_sequence_3'}
-show_only_frames = [0, 1] # show only frames in interval for debugging
+show_only_frames = [50, 51] # show only frames in interval for debugging
 
 ## Prepare Waymo Open Dataset file for loading
 data_fullpath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dataset', data_filename) # adjustable path in case this script is called from another working directory
@@ -83,10 +83,10 @@ camera = None # init camera sensor object
 np.random.seed(10) # make random values predictable
 
 ## Selective execution and visualization
-exec_data = ['pcl_from_rangeimage']
-exec_detection = ['bev_from_pcl'] # options are 'bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance'; options not in the list will be loaded from file
+exec_data = ['pcl_from_rangeimage', ]
+exec_detection = ['bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance'] # options are 'bev_from_pcl', 'detect_objects', 'validate_object_labels', 'measure_detection_performance'; options not in the list will be loaded from file
 exec_tracking = [] # options are 'perform_tracking'
-exec_visualization = [] # options are 'show_range_image', 'show_bev', 'show_pcl', 'show_labels_in_image', 'show_objects_and_labels_in_bev', 'show_objects_in_bev_labels_in_camera', 'show_tracks', 'show_detection_performance', 'make_tracking_movie'
+exec_visualization = ['show_detection_performance'] # options are 'show_range_image', 'show_bev', 'show_pcl', 'show_labels_in_image', 'show_objects_and_labels_in_bev', 'show_objects_in_bev_labels_in_camera', 'show_tracks', 'show_detection_performance', 'make_tracking_movie'
 exec_list = make_exec_list(exec_detection, exec_tracking, exec_visualization)
 vis_pause_time = 0 # set pause time between frames in ms (0 = stop between frames until key is pressed)
 
@@ -156,7 +156,7 @@ while True:
                 if 'perform_tracking' in exec_list:
                     detections = load_object_from_file(results_fullpath, data_filename, 'detections', cnt_frame, model_name, sequence_mapper)
                 else:
-                    detections = load_object_from_file(results_fullpath, data_filename, 'detections_' + configs_det.arch + '_' + str(configs_det.conf_thresh), cnt_frame, model_name, sequence_mapper)
+                    detections = load_object_from_file(results_fullpath, data_filename, 'detections_' + model_name + '_' + str(configs_det.conf_thresh), cnt_frame, model_name, sequence_mapper)
 
         ## Validate object labels
         if 'validate_object_labels' in exec_list:
@@ -176,7 +176,7 @@ while True:
             if 'perform_tracking' in exec_list:
                 det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance', cnt_frame, model_name, sequence_mapper)
             else:
-                det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance_' + configs_det.arch + '_' + str(configs_det.conf_thresh), cnt_frame, model_name, sequence_mapper)   
+                det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance_' + model_name + '_' + str(configs_det.conf_thresh), cnt_frame, model_name, sequence_mapper)   
 
         det_performance_all.append(det_performance) # store all evaluation results in a list for performance assessment at the end
         

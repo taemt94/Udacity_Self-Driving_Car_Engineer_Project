@@ -23,7 +23,7 @@ def save_object_to_file(object, file_path, base_filename, object_name, frame_id=
 
 ## Loads an object from a binary file
 def load_object_from_file(file_path, base_filename, object_name, frame_id=1, model_name='darknet', sequence_mapper=None):
-    sequence_name = str(sequence_mapper[base_filename] + '_' + model_name)
+    sequence_name = str(sequence_mapper[base_filename] + '_' + model_name.split("_")[-1])
     if 'det_performance' in object_name or 'detections' in object_name:
         object_filename = os.path.join(file_path, model_name, sequence_name,
                                        os.path.splitext(base_filename)[0]+ "__frame-" + str(frame_id) + "__" + object_name + ".pkl")        
