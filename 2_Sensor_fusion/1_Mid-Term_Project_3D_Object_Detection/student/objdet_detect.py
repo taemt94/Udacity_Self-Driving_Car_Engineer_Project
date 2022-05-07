@@ -128,6 +128,7 @@ def load_configs(model_name='fpn_resnet', configs=None):
     configs.output_width = 608 # width of result image (height may vary)
     configs.obj_colors = [[0, 255, 255], [0, 0, 255], [255, 0, 0]] # 'Pedestrian': 0, 'Car': 1, 'Cyclist': 2
 
+    configs.min_iou = 0.5
     return configs
 
 
@@ -227,25 +228,27 @@ def detect_objects(input_bev_maps, model, configs):
 
     ## step 1 : check whether there are any detections
     ## all detections have the format [1, x, y, z, h, w, l, yaw], where 1 denotes the class id for the object type vehicle.
-    if detections.shape[0] > 0:
+    if len(detections) > 0:
+        x_scale = configs.lim_x[1] - configs.lim_x[0]
+        y_scale = configs.lim_y[1] - configs.lim_y[0]
+        x_offset = configs.lim_x[0]
+        y_offset = configs.lim_y[0]
         ## step 2 : loop over all detections
         for object in detections:
+
             ## step 3 : perform the conversion using the limits for x, y and z set in the configs structure
-            x_scale = configs.lim_x[1] - configs.lim_x[0]
-            y_scale = configs.lim_y[1] - configs.lim_y[0]
-            x_offset = configs.lim_x[0]
-            y_offset = configs.lim_y[0]
-            
+
             class_id, y_bev, x_bev, z, h, w_bev, l_bev, yaw = object
             x = (x_bev / configs.bev_height) * x_scale + x_offset
             y = (y_bev / configs.bev_width) * y_scale + y_offset
             l = (l_bev / configs.bev_height) * x_scale
             w = (w_bev / configs.bev_width) * y_scale
             yaw = -yaw
+
             ## step 4 : append the current object to the 'objects' array
             objects.append([class_id, x, y, z, h, w, l, yaw])
     #######
-    ####### ID_S3_EX2 END #######   
-    
-    return objects    
+    ####### ID_S3_EX2 END #######
+
+    return objects
 
