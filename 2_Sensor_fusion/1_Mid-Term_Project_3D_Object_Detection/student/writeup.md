@@ -7,38 +7,26 @@ This report is for sensor fusion mid-term project and there are two items that n
 These tasks will be resolved under below.
 1. Find and display 10 examples of vehicles with varying 
 degrees of visibility in the point-cloud
+2. Identify vehicle features that appear as a stable feature on most vehicles (e.g. rear-bumper, tail-lights) and describe them briefly. Also, use the range image viewer from the last example to underpin your findings using the lidar intensity channel.
     - To do this task, firstly I used open3d visualizer to inpect point clouds in different view point and captured the visualization of them.
     - The images of point cloud in different view point are under below.
-![image 1-1](examples/1-1.PNG)
-![image 1-2](examples/1-2.PNG)
-![image 2-1](examples/2-1.PNG)
-![image 2-2](examples/2-2.PNG)
-![image 3-1](examples/3-1.PNG)
-![image 3-2](examples/3-2.PNG)
-![image 4-1](examples/4-1.PNG)
-![image 4-2](examples/4-2.PNG)
-![image 5-1](examples/5-1.PNG)
-![image 5-2](examples/5-2.PNG)
-![image 6-1](examples/6-1.PNG)
-![image 6-2](examples/6-2.PNG)
-![image 7-1](examples/7-1.PNG)
-![image 7-2](examples/7-2.PNG)
-![image 8-1](examples/8-1.PNG)
-![image 8-2](examples/8-2.PNG)
-![image 9-1](examples/9-1.PNG)
-![image 9-2](examples/9-2.PNG)
-![image 10-1](examples/10-1.PNG)
-![image 10-2](examples/10-2.PNG)
-
-2. Identify vehicle features that appear as a stable feature on most vehicles (e.g. rear-bumper, tail-lights) and describe them briefly. Also, use the range image viewer from the last example to underpin your findings using the lidar intensity channel.
-    - To accomplish this task, I used the last example of the third sequence data and found proper vehicles that can be easily identified.
-    - I attached the images of identified vehicle features in point cloud as well as the intensity channel of the same vehicle.
-![image 2-1-1](examples/2-1-1.PNG)
-![image 2-1-2](examples/2-1-2.PNG)
-![image 2-2-1](examples/2-2-1.PNG)
-![image 2-2-2](examples/2-2-2.PNG)
-    - In the first image, I could identify the head-light and front bumper by the shape of point cloud.
-    - In the seconde image, Front tire, Rear tire, Rear bumper and side window can be visible in the point cloud.
-    - Interestingly, because laser from Lidar can penetrate the side window that is usually transparent, there are very few reflected points representing the window so it can be easily identified.
+![image 1](examples/example1.png)
+![image 2](examples/example2.png)
+![image 3](examples/example3.png)
+![image 4](examples/example4.png)
+![image 5](examples/example5.png)
+![image 6](examples/example6.png)
+![image 7](examples/example7.png)
+![image 8](examples/example8.png)
+![image 9](examples/example9.png)
+![image 10](examples/example10.png)
+    - In general, at the front side of vehicles, I can see their side mirrors, head lights and front bumpers.
+    - Moreover, the interesting thing is that since laser from Lidar can penetrate the windsheid that is usually transparent, there are very few reflected points representing the window so windsheid of vehicles can be easily identified and sometimes I can also recognize headrests or seats of vehicles.
+    - Many of the vehicle in point clouds are SUVs or hatchback so I can identify their rear door from point cloud.
+    - In the third point cloud, there is a unique vehicle which is a truck with a trailer attached and the trailer looks like empty.
+    - Lastly, tires and wheels can be easily identified since their shape is round and are seperate from vehicle bodies.
+    - These features that I mentioned above can also be seen in the range image below.
+![range image](examples/range_image.PNG)
+    - If you see the vehicle on the left side of the range image, which is the last example vehicle of the point cloud, clearly the features such as windsheid, head ramp and side mirrors can be identified and even we can see more features like front grill or license plate which are slightly difficult to identify in point cloud.
 
 - Every images are in `examples/`

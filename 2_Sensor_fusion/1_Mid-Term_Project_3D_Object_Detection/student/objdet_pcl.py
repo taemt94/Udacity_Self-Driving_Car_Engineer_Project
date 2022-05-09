@@ -33,49 +33,41 @@ import misc.objdet_tools as tools
 
 
 # visualize lidar point-cloud
-first = True
-def show_pcl(pcl):
-
-    ####### ID_S1_EX2 START #######     
+def show_pcl(pcl, cnt_frame=0):
+    ####### ID_S1_EX2 START #######
     #######
     print("student task ID_S1_EX2")
 
     # step 1 : initialize open3d with key callback and create window
-    global first
-    if first:
-        show_pcl.visualizer = o3d.visualization.VisualizerWithKeyCallback()  
-        show_pcl.visualizer.create_window()
+    visualizer = o3d.visualization.VisualizerWithKeyCallback()
+    visualizer.create_window(width=1280, height=720, left=50, top=50)
     
     # step 2 : create instance of open3d point-cloud class
     pcd = o3d.geometry.PointCloud()
-
+    
     # step 3 : set points in pcd instance by converting the point-cloud into 3d vectors (using open3d function Vector3dVector)
     pcd.points = o3d.utility.Vector3dVector(pcl[:, :3])
     
-    # # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
-    if first:
-        show_pcl.visualizer.add_geometry(pcd)
+    # step 4 : for the first frame, add the pcd instance to visualization using add_geometry; for all other frames, use update_geometry instead
+    if cnt_frame == 0:
+        visualizer.add_geometry(pcd)
     else:
-        # show_pcl.visualizer.add_geometry(pcd)
-        show_pcl.visualizer.update_geometry(pcd)
-        show_pcl.visualizer.update_renderer()
-        show_pcl.visualizer.poll_events()     
-    view_control = show_pcl.visualizer.get_view_control()
+        visualizer.update_geometry(pcd)
+        visualizer.update_renderer()
+        visualizer.poll_events()
+    view_control = visualizer.get_view_control()
     view_control.set_zoom(0.1)
     view_control.set_lookat(np.array([16, 0, 0]))
     view_control.set_up(np.array([0.03,0,0]))
-    view_control.set_front(np.array([-0.1,0,0.03]))
-    show_pcl.visualizer.run()
-    
+    view_control.set_front(np.array([-0.1,0,0.03]))        
+
     # step 5 : visualize point cloud and keep window open until right-arrow is pressed (key-code 262)
-    if first:
-        show_pcl.visualizer.register_key_callback(key=262, callback_func=show_pcl.visualizer.destroy_window)
-        first = False
-    
-    pass
+    visualizer.register_key_callback(262, callback_func=visualizer.destroy_window)
+    visualizer.run()
+
     #######
-    ####### ID_S1_EX2 END #######     
-       
+    ####### ID_S1_EX2 END #######   
+    
 
 # visualize range image
 def show_range_image(frame, lidar_name):
