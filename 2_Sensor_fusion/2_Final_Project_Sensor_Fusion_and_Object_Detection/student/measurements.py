@@ -29,7 +29,7 @@ class Sensor:
             self.dim_meas = 3
             self.sens_to_veh = np.matrix(np.identity((4))) # transformation sensor to vehicle coordinates equals identity matrix because lidar detections are already in vehicle coordinates
             self.fov = [-np.pi/2, np.pi/2] # angle of field of view in radians
-        
+
         elif name == 'camera':
             self.dim_meas = 2
             self.sens_to_veh = np.matrix(calib.extrinsic.transform).reshape(4,4) # transformation sensor to vehicle coordinates
@@ -38,27 +38,39 @@ class Sensor:
             self.c_i = calib.intrinsic[2] # principal point i-coordinate
             self.c_j = calib.intrinsic[3] # principal point j-coordinate
             self.fov = [-0.35, 0.35] # angle of field of view in radians, inaccurate boundary region was removed
-            
+
         self.veh_to_sens = np.linalg.inv(self.sens_to_veh) # transformation vehicle to sensor coordinates
-    
+
     def in_fov(self, x):
         # check if an object x can be seen by this sensor
         ############
         # TODO Step 4: implement a function that returns True if x lies in the sensor's field of view, 
         # otherwise False.
         ############
-
-        return True
         
+        x_veh = np.ones((4, 1))
+        x_veh[:3] = x[:3]
+
+        x_sens = self.veh_to_sens * x_veh
+        p_x = x_sens[0, 0]
+        p_y = x_sens[1, 0]
+
+        visible = False
+        if p_x > 0:
+            alpha = np.arctan2(p_y, p_x)
+            if self.fov[0] < alpha < self.fov[1]:
+                visible = True
+        return visible
+
         ############
         # END student code
-        ############ 
-             
-    def get_hx(self, x):    
-        # calculate nonlinear measurement expectation value h(x)   
+        ############
+
+    def get_hx(self, x):
+        # calculate nonlinear measurement expectation value h(x)
         if self.name == 'lidar':
             pos_veh = np.ones((4, 1)) # homogeneous coordinates
-            pos_veh[0:3] = x[0:3] 
+            pos_veh[0:3] = x[0:3]
             pos_sens = self.veh_to_sens*pos_veh # transform from vehicle to lidar coordinates
             return pos_sens[0:3]
         elif self.name == 'camera':
@@ -71,7 +83,22 @@ class Sensor:
             # - return h(x)
             ############
 
-            pass
+            ## transform position estimate from vehicle to camera coordinates
+            pos_veh = np.ones((4, 1))
+            pos_veh[:3] = x[:3]
+            pos_sens = self.veh_to_sens * pos_veh
+            
+            ## project from camera to image coordinates
+            hx = np.zeros((self.dim_meas, 1))
+            p_x = pos_sens[0]
+            p_y = pos_sens[1]
+            p_z = pos_sens[2]
+            eps = 1e-8
+            
+            hx[0, 0] = self.c_i - self.f_i * p_y / (p_x + eps)
+            hx[1, 0] = self.c_j - self.f_j * p_z / (p_x + eps)
+            
+            return hx
         
             ############
             # END student code
@@ -115,9 +142,9 @@ class Sensor:
         # TODO Step 4: remove restriction to lidar in order to include camera as well
         ############
         
-        if self.name == 'lidar':
-            meas = Measurement(num_frame, z, self)
-            meas_list.append(meas)
+        meas = Measurement(num_frame, z, self)
+        meas_list.append(meas)
+            
         return meas_list
         
         ############
@@ -155,8 +182,17 @@ class Measurement:
             ############
             # TODO Step 4: initialize camera measurement including z and R 
             ############
-
-            pass
+            
+            self.z = np.zeros((sensor.dim_meas, 1))
+            self.z[0] = z[0]
+            self.z[1] = z[1]
+            self.width = z[2]
+            self.length = z[3]
+            
+            sigma_cam_i = params.sigma_cam_i
+            sigma_cam_j = params.sigma_cam_j
+            self.R = np.matrix([[sigma_cam_i**2, 0],
+                                [0, sigma_cam_j**2]])
         
             ############
             # END student code
