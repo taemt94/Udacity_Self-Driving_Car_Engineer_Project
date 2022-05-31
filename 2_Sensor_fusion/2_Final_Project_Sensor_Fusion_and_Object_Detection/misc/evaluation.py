@@ -11,6 +11,7 @@
 #
 
 # imports
+import pathlib
 import numpy as np
 import matplotlib
 matplotlib.use('wxagg') # change backend so that figure maximizing works on Mac as well     
@@ -231,17 +232,33 @@ def plot_rmse(manager, all_labels, configs_det):
         
 def make_movie(path):
     # read track plots
-    images = [img for img in sorted(os.listdir(path)) if img.endswith(".png")]
-    frame = cv2.imread(os.path.join(path, images[0]))
+    images = [img for img in sorted(os.listdir(str(path))) if img.endswith(".png")]
+    frame = cv2.imread(os.path.join(path, images[1]))
     height, width, layers = frame.shape
 
     # save with 10fps to result dir
-    video = cv2.VideoWriter(os.path.join(path, 'my_tracking_results.avi'), 0, 10, (width,height))
+    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+    fps = 10
+    video = cv2.VideoWriter(os.path.join(path, 'my_tracking_results.avi'), fourcc, fps, (width,height))
 
-    for image in images:
+    for i, image in enumerate(images):
         fname = os.path.join(path, image)
-        video.write(cv2.imread(fname))
+        if i == 0:
+            os.remove(fname) # clean up
+            continue
+        
+        cv_img = cv2.imread(fname)
+        cv_img = cv_img[..., ::-1]
+        cv2.imshow("img", cv_img)
+        video.write(cv_img)
         os.remove(fname) # clean up
-
+        if cv2.waitKey(int(1000/fps)):
+            continue
     cv2.destroyAllWindows()
     video.release()
+    
+    
+if __name__ == "__main__":
+    result_path = "results"
+    
+    make_movie(result_path)
