@@ -24,12 +24,20 @@ By implementing all of the codes above, I could finally initialize new tracks fr
 
 The most difficult part of this project for me was understanding the whole system of object tracking process. To overcome this, I structurized each element such as `Trackmanagement` and `Association` of the system by writing down them on a large paper and tried to see them in a whole picture. By this, I could clearly realize the whole system so that it was easy to implement each element.
 
+
 ### 2. Do you see any benefits in camera-lidar fusion compared to lidar-only tracking (in theory and in your concrete results)? 
+
 I think there are many benefits in camera-lidar fusion compared to lidar-only tracking. First of all, I could see many ghost tracks when I only used the lidar-only tracking sytem in this project, but they decreased dramastically when camera measurements were added for the tracking. Also, when it comes to false negative case, the probability that the sensor cannot detect the object, which could be critical, will decrease if camera-lidar fusion is used since the object that is difficult to be detected by the lidar can be easily detected by the camera.
 
 
 ### 3. Which challenges will a sensor fusion system face in real-life scenarios? Did you see any of these challenges in the project?
 
+In my opinion, one of the most challenging and dangerous situations in real-life scenarios is a false negative case. Obviously, by the sensor fusion system, which leverages several sensors such as camera, radar, and lidar and they can compensate each other's drawbacks, the false negative cases will rarely happen but it does not mean 0. Additionally, Association step can be problematic since heuristic methods for the distance measurement are typically used and they sometimes might not accurate.
+
+
+Associating measurements with tracks can be difficult. In a situation with many vehicles or other objects to track, the heuristics we use to assign measurements to tracks may break down. Additionally, in situations where one or the other sensor is failing to detect an object in the scene, that object's tracking may never become confirmed. There are also situations where one or the other sensor might perform more or less poorly. For example, cameras may perform poorly at night while lidar might perform poorly in inclement weather. We didn't see any of these particular situations in our project, but its not hard to imagine these types of situations arising in real-world conditions.
+
 
 ### 4. Can you think of ways to improve your tracking results in the future?
 
+As recently I started working in the field of V2X communication, V2X messages can be one of the options to improve tracking results because the tracking information can be supplemented from the information of other vehicles or infrastructures by V2V or V2I messages. Another way to improve tracking results is to improve the detection results. Good detection results mean that we can strongly believe the measurements so that we can depend more on measurements rather than predictions and it would be better since measurements are more accurate than prediction results.
