@@ -4,6 +4,8 @@ pretrained_model/
 *__pycache__
 *.ipynb_checkpoints/
 *.sh
+!install-ubuntu.sh
+!run_*.sh
 checkpoint*
 ckpt*
 dataset/
