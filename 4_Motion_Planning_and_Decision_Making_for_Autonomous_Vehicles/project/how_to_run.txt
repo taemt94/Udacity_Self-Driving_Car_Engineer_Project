@@ -1,8 +1,8 @@
 New terminal window
 1. su - student
 // Will say permission denied, ignore and continue 
-2. cd /opt/carla-simulator/
-3. SDL_VIDEODRIVER=offscreen ./CarlaUE4.sh -opengl
+2. cd nd013-c5-planning-starter/project
+3. ./run_carla.sh
 
 New terminal window
 4. git clone https://github.com/udacity/nd013-c5-planning-starter.git

@@ -1,6 +1,7 @@
-# Purpose of This Repo
+# Motion Planning and Decision Making for Autonomous Vehicles
+## Result video
+Here is the result of this project that includes FSM states from "LANE FOLLOWING" to "STAY STOPPED".
 
-This repository contains the starter code to launch in the SDC Planning course workspace. 
-
-
-
+<video width="100%" height="100%" controls="controls">
+  <source src="./result.mp4" type="video/mp4">
+</video>

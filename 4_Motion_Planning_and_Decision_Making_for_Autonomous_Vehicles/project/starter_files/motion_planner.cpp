@@ -84,8 +84,8 @@ std::vector<State> MotionPlanner::generate_offset_goals(
 
   // TODO-Perpendicular direction: ADD pi/2 to the goal yaw
   // (goal_state.rotation.yaw)
-  auto yaw = goal_state.rotation.yaw;
-  auto yaw_plus_90 = yaw  + M_PI_2;  // <- Fix This
+  auto yaw = goal_state.rotation.yaw + M_PI_2;
+  // auto yaw_plus_90 = yaw  + M_PI_2;  // <- Fix This
 
   LOG(INFO) << "MAIN GOAL";
   LOG(INFO) << "x: " << goal_state.location.x << " y: " <<
@@ -110,8 +110,8 @@ std::vector<State> MotionPlanner::generate_offset_goals(
     // lie on a perpendicular line to the direction (yaw) of the main goal. You
     // calculated this direction above (yaw_plus_90). HINT: use
     // std::cos(yaw_plus_90) and std::sin(yaw_plus_90)
-    goal_offset.location.x += offset * std::cos(yaw_plus_90);  // <- Fix This
-    goal_offset.location.y += offset * std::sin(yaw_plus_90);  // <- Fix This
+    goal_offset.location.x += offset * std::cos(yaw);  // <- Fix This
+    goal_offset.location.y += offset * std::sin(yaw);  // <- Fix This
     LOG(INFO) << "x: " << goal_offset.location.x
              << " y: " << goal_offset.location.y
              << " z: " << goal_offset.location.z
