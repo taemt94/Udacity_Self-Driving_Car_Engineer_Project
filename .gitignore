@@ -6,6 +6,7 @@ pretrained_model/
 *.sh
 !install-ubuntu.sh
 !run_*.sh
+!base_setting.sh
 checkpoint*
 ckpt*
 dataset/
