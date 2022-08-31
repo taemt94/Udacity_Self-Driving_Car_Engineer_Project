@@ -60,16 +60,16 @@ using json = nlohmann::json;
 #define _USE_MATH_DEFINES
 
 //// PID gains for steering controller
-const double KP_STEER{0.3};   // 0.3
-const double KI_STEER{0.0005}; // 0.001
-const double KD_STEER{0.3};   // 0.3
+const double KP_STEER{0.3};
+const double KI_STEER{0.0005};
+const double KD_STEER{0.3};
 const double MAX_STEER{1.2};
 const double MIN_STEER{-1.2};
 
 //// PID gains for throttle controller
-const double KP_THROTTLE{0.2};    // 0.2
-const double KI_THROTTLE{0.0005}; // 0.009
-const double KD_THROTTLE{0.0005};    // 0.1
+const double KP_THROTTLE{0.2};
+const double KI_THROTTLE{0.0005};
+const double KD_THROTTLE{0.0005};
 const double MAX_THROTTLE{1.0};
 const double MIN_THROTTLE{-1.0};
 
@@ -242,19 +242,16 @@ int main ()
   * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
   PID pid_steer = PID();
-  // pid_steer.Init(0.05, 0.01, 0.2, 1.2, -1.2);
-  // pid_steer.Init(0.1, 0.001, 1.0, 1.2, -1.2);
-  pid_steer.Init(KP_STEER, KI_STEER, KD_STEER, MAX_STEER, MIN_STEER);
+  pid_steer.Init(KP_STEER, KI_STEER, KD_STEER,
+                 MAX_STEER, MIN_STEER);
   
   // initialize pid throttle
   /**
   * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
   **/
   PID pid_throttle = PID();
-  // pid_throttle.Init(0.05, 0.01, 0.2, 1.0,-1.0);
   pid_throttle.Init(KP_THROTTLE, KI_THROTTLE, KD_THROTTLE,
                     MAX_THROTTLE, MIN_THROTTLE);
-  // pid_throttle.Init(0.5, 0, 0, 1.0,-1.0);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -349,8 +346,6 @@ int main ()
           // Compute control to apply
           pid_steer.UpdateError(error_steer);
           steer_output = pid_steer.TotalError();
-          cout << "desired: " << desired_angle << " actual: " << yaw << endl;
-          cout << "P: " << pid_steer.p_error << " I: " << pid_steer.i_error << " D: " << pid_steer.d_error << endl << endl;
 
           // Save data
           file_steer.seekg(std::ios::beg);
@@ -395,7 +390,6 @@ int main ()
           double throttle = pid_throttle.TotalError();
 
           // Adapt the negative throttle to break
-          cout << "throttle_error: " << throttle << endl;
           if (throttle > 0.0) {
             throttle_output = throttle;
             brake_output = 0;
