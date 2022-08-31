@@ -78,6 +78,11 @@ Plot the saved values using the command (in `./project`):
 python3 plot_pid.py
 ```
 
+## Result video
+Here is the result of this project.
+
+https://user-images.githubusercontent.com/73112658/187698074-f7280fbf-9afb-47cc-8c28-0f76a5ee2d7c.mp4
+
 Answer the following questions:
 - Add the plots to your report and explain them (describe what you see)
 - What is the effect of the PID according to the plots, how each part of the PID affects the control command?
