@@ -13,6 +13,7 @@ Clone the <a href="https://github.com/udacity/nd013-c6-control-starter/tree/mast
 $ git clone https://github.com/udacity/nd013-c6-control-starter.git
 ```
 
+---
 ## Run Carla Simulator
 
 Open new window
@@ -24,6 +25,7 @@ Open new window
 * `sh run_carla.sh`
 ```
 
+---
 ## Compile and Run the Controller
 
 Open new window
@@ -31,6 +33,8 @@ Open new window
 $ cd ./project
 $ sh base_setting.sh ## This command will execute everything that is needed to be set from "./install-ubuntu.sh" to "cmake ." and "make"
 ```
+
+---
 ## Testing
 
 To test your installation run the following commands.
@@ -46,7 +50,7 @@ If error bind is already in use, or address already being used
 * `ps -aux | grep carla`
 * `kill id`
 
-
+---
 ## Project Instructions
 
 In the previous project, a path planner for the autonomous vehicle has been built. Now a steer and throttle controller is built so that the car follows the trajectory.
@@ -78,22 +82,28 @@ Plot the saved values using the command (in `./project`):
 python3 plot_pid.py
 ```
 
+---
 ## Result video
 Here is the result of this project.
 
 https://user-images.githubusercontent.com/73112658/187698074-f7280fbf-9afb-47cc-8c28-0f76a5ee2d7c.mp4
 
-Answer the following questions:
-- Add the plots to your report and explain them (describe what you see)
-- What is the effect of the PID according to the plots, how each part of the PID affects the control command?
-- How would you design a way to automatically tune the PID parameters?
-- PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
-- (Optional) What would you do to improve the PID controller?
+---
+## Questions
+1. Add the plots to your report and explain them (describe what you see)
+
+    |Case|Steer|Throttle|
+    |:--:|:---:|:------:|
+    |1|![img1-1](./reference/result_plot/st_test1_reference.png) $K_p$: 0.1, $K_i$: 0.0, $K_d$: 0.0|![img1-2](./reference/result_plot/th_test1_reference.png) $K_p$: 0.1, $K_i$: 0.0, $K_d$: 0.0|
+    |2|![img2-1](./reference/result_plot/st_test2_kp0.3_ki0.0_kd0.0.png) $K_p$: 0.3, $K_i$: 0.0, $K_d$: 0.0|![img2-2](./reference/result_plot/th_test2_kp0.1_ki0.0_kd0.0.png) $K_p$: 0.1, $K_i$: 0.0, $K_d$: 0.0|
+    
+2. What is the effect of the PID according to the plots, how each part of the PID affects the control command?
 
 
-### Tips:
+3. How would you design a way to automatically tune the PID parameters?
 
-- When you wil be testing your c++ code, restart the Carla simulator to remove the former car from the simulation.
-- If the simulation freezes on the desktop mode but is still running on the terminal, close the desktop and restart it.
-- When you will be tuning the PID parameters, try between those values:
 
+4. PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
+
+
+5. (Optional) What would you do to improve the PID controller?
