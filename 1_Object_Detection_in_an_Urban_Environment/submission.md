@@ -32,7 +32,7 @@ As you can see in the above plots, some of .tfrecord files do not contain pedest
 
 ### Reference experiment
 
-|                   |                                             |
+|       <!-- -->            |                         <!-- -->                    |
 |:-----------------:|:-------------------------------------------:|
 |       Model       |                 SSD ResNet50                |
 | Data Augmentation | Random Horizontal Flip<br>Random Crop Image |
@@ -71,7 +71,7 @@ Basically, the refence model contains random horizontal flip and random crop ima
 |       Model       |                                         SSD ResNet50                                        |
 | Data Augmentation | Random Horizontal Flip<br>Random Crop Image<br>Random Adjust Brightness<br>Random Adjust Hue |
 |     Train Step    |                                            25,000                                           |
-|     Optimizer     |                                           Adam                                          |
+|     Optimizer     |                                           Momentum                                          |
 |   Learning Rate   |                                             0.001                                            |
 |      LR Decay     |                                         Cosine Decay                                        |
 
@@ -125,7 +125,7 @@ By applying additional augmentation, it can be seen that mAP and recall performa
     |       Model       |                                         SSD ResNet101                                        |
     | Data Augmentation | Random Horizontal Flip<br>Random Crop Image<br>Random Adjust Brightness<br>Random Adjust Hue |
     |     Train Step    |                                            50,000                                           |
-    |     Optimizer     |                                           Adam                                          |
+    |     Optimizer     |                                           Momentum                                          |
     |   Learning Rate   |                                             0.001                                            |
     |      LR Decay     |                                         Cosine Decay                                        |
 
