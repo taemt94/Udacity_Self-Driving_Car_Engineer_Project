@@ -12,3 +12,6 @@ ckpt*
 dataset/
 results/
 pretrained/
+animation.gif
+1_Object_Detection_in_an_Urban_Environment/experiments/experiment5_EfficientDet/train/
+exported/
