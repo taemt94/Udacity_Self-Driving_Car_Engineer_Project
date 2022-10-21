@@ -60,9 +60,9 @@ using json = nlohmann::json;
 #define _USE_MATH_DEFINES
 
 //// PID gains for steering controller
-const double KP_STEER{0.3};
+const double KP_STEER{0.5};
 const double KI_STEER{0.0005};
-const double KD_STEER{0.3};
+const double KD_STEER{0.05};
 const double MAX_STEER{1.2};
 const double MIN_STEER{-1.2};
 
