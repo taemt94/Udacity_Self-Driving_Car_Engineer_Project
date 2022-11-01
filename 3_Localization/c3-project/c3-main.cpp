@@ -203,9 +203,9 @@ int main(){
 	// Create a NDT object and set initial settings and target point cloud
 #if ICP_MODE == 0
 	pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt;
-	ndt.setTransformationEpsilon(0.0001);
+	ndt.setTransformationEpsilon(0.001);
 	ndt.setResolution(1.0);
-	ndt.setStepSize(1.0);
+	ndt.setStepSize(5.0);
 	ndt.setInputTarget(mapCloud);
 #endif
 
@@ -277,7 +277,7 @@ int main(){
 			int max_iterations = 10;
 			transformation_matrix = ICP(mapCloud, cloudFiltered, pose, max_iterations);
 #else			
-			int max_iterations = 3;
+			int max_iterations = 80;
 			transformation_matrix = NDT(ndt, cloudFiltered, pose, max_iterations);
 #endif		
 			pose = getPose(transformation_matrix);
