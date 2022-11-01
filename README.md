@@ -27,6 +27,8 @@ By this project, I could practice how to use Tensorflow Object Detection API and
 
 
 ## Project 3. Localization
+- This project is intended to localize a ego vehicle driving in CARLA simulator. It use a LiDAR point cloud for localization and a point cloud map is given so it is not a SLAM system but more like just localization. `ICP` or `NDT` matching algorithm are used to get the vehicle's position in the given map and the goal is to localize the vehicle for at least 170m from the starting point within a distance pose error of 1.2m.
+- You can find the result videos (ICP, NDT) from [here](3_Localization/Result.md). 
 
 ## Project 4. Motion Planning and Decision Making for Autonomous Vehicles
 
