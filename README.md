@@ -31,5 +31,14 @@ By this project, I could practice how to use Tensorflow Object Detection API and
 - You can find the result videos (ICP, NDT) from [here](3_Localization/Result.md). 
 
 ## Project 4. Motion Planning and Decision Making for Autonomous Vehicles
+- In this project, the Behavior Planner and the Motion Planner are implemented.
+- The Behavior Planner uses FSM (Finite State Machine) as its planning logic and the ego vehicle needs to avoid crashing with the static objects under the FSM.
+- The Motion Planner generates path and trajectory using cubic spirals and selects the best trajectory through a cost function evaluation.
+- The result of a driving scenario that the ego vehicle avoids static obstacles while driving are [here](4_Motion_Planning_and_Decision_Making_for_Autonomous_Vehicles/README.md).
+
 
 ## Project 5. Control and Trajectory Tracking for Autonomous Vehicles
+- In this project, a PID controller is designed in order to perform vehicle trajectory tracking. Given a trajectory as an array of locations, a PID controller controls an ego vehicle and its efficiency is tested on the CARLA simulator used in the industry.
+- Two PID controllers, in which one is for steering and the other one is for throttling, are built so that the ego vehicle follows the trajectory generated from the Motion Planner.
+- The parameters, $K_P, K_I, K_D$, are tuned to drive without any collision in the scenario.
+- You can find [a result video and a writeup](5_Control_and_Trajectory_Tracking_for_Autonomous_Vehicles/README.md) that includes detailed analysis of a tuning PID parameters process.
